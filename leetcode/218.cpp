@@ -73,3 +73,29 @@ vector<pair<int, int>> getSkyline(vector<vector<int>>& buildings) {
 	tmp_p.first = s_max; tmp_p.second = 0; res.push_back(tmp_p);//将最后个点压入
 	return res;
 }
+
+//这是20ms的算法十分精妙的把连续的问题看成了 一条条直线的插入 把矩形的起点和终点设置为相反数利用这个性质来进行判别实属精妙。
+class Solution {
+public:
+    vector<pair<int, int>> getSkyline(vector<vector<int>>& buildings) {
+        vector<pair<int, int>> h, res;
+        multiset<int> m;
+        int pre = 0, cur = 0;
+        for (auto &a : buildings) {
+            h.push_back({a[0], -a[2]});
+            h.push_back({a[1], a[2]});
+        }
+        sort(h.begin(), h.end());
+        m.insert(0);
+        for (auto &a : h) {
+            if (a.second < 0) m.insert(-a.second);
+            else m.erase(m.find(a.second));
+            cur = *m.rbegin();
+            if (cur != pre) {
+                res.push_back({a.first, cur});
+                pre = cur;
+            }
+        }
+        return res;
+    }
+};
