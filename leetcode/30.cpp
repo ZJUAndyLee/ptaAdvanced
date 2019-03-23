@@ -78,4 +78,28 @@ vector<int> findSubstring(string s, vector<string>& words) {
     return res;
 }
 };
-
+//一个简便的思路 做两个map，第一个散列表就是以关键字符串为关键词散列的 然后每次去map里寻找找到了就把它存到map2中这时你只要去比较一下 map2中的值是不是
+//比map1中对应的值大就可以了 如果大就说明重复的次数超过关键词的词频数了
+class Solution {
+public:
+	vector<int> findSubstring(string s, vector<string>& words) {
+		vector<int> res;
+		if (s.empty() || words.empty()) return res;
+		int n = words.size(), m = words[0].size();
+		unordered_map<string, int> m1;
+		for (auto &a : words) ++m1[a]; //先全部存进去所有单词
+		for (int i = 0; i <= (int)s.size() - n * m; ++i) { //一个个字母遍历
+			unordered_map<string, int> m2;
+			int j = 0;
+			for (j = 0; j < n; ++j) {
+				string t = s.substr(i + j * m, m);
+				if (m1.find(t) == m1.end()) break; //如果找不到break;
+				
+				++m2[t]; //找到了就存在m2里面
+				if (m2[t] > m1[t]) break; //相同的词只能出现一次?
+			}
+			if (j == n) res.push_back(i);
+		}
+		return res;
+	}
+};
