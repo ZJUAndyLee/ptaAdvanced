@@ -22,3 +22,28 @@ public:
 		return res;
 	}
 };
+
+
+//后序遍历的迭代版本 非递归
+class Solution {
+public:
+	vector<int> postorderTraversal(TreeNode* root) {
+		vector<int> res;
+		stack<TreeNode *>stk;
+		TreeNode *tmp = root;
+		stk.push(tmp); stk.push(tmp);
+        if(!tmp) return res;
+		while (!stk.empty()) {
+			tmp = stk.top();
+			stk.pop();
+			if (!stk.empty()&&tmp==stk.top()) {
+				if (tmp->right) { stk.push(tmp->right); stk.push(tmp->right); }
+				if (tmp->left) { stk.push(tmp->left); stk.push(tmp->left); }
+			}
+			else {
+				res.push_back(tmp->val);
+			}
+		}
+		return res;
+	}
+};
