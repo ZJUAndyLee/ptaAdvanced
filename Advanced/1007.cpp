@@ -41,6 +41,7 @@ void MaxSubseqSum(vector<int> &vec) {
 }
 
 int main() {
+	
 	vector<int> seq;
 	Input(seq);
 	MaxSubseqSum(seq);
